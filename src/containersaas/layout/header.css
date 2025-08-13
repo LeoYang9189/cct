@@ -1,0 +1,67 @@
+.container-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 20px;
+  background-color: var(--color-bg-2); /* Ensure header has a background */
+}
+
+.container-header-left {
+  display: flex;
+  align-items: center;
+}
+
+.container-header-left .collapse-btn {
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--color-text-1);
+  padding: 8px; /* Add some padding for easier clicking */
+  border-radius: var(--border-radius-small);
+  transition: background-color 0.2s ease;
+}
+
+.container-header-left .collapse-btn:hover {
+  background-color: var(--color-fill-3);
+}
+
+.container-header-left .arco-breadcrumb {
+  margin-left: 16px;
+}
+
+.container-header-left .arco-breadcrumb .arco-breadcrumb-item a {
+  color: var(--color-text-2);
+  transition: color 0.2s ease;
+}
+
+.container-header-left .arco-breadcrumb .arco-breadcrumb-item a:hover {
+  color: var(--color-text-1);
+}
+
+.container-header-left .arco-breadcrumb .arco-breadcrumb-item > span:last-child .arco-breadcrumb-item-separator {
+  display: none; /* Hide separator for the last item if it's not a link */
+}
+
+.container-header-right {
+  display: flex;
+  align-items: center;
+}
+
+.container-header-right .arco-avatar {
+  margin-left: 16px;
+  background-color: var(--color-primary-light-1) !important; /* Override default avatar bg if needed */
+}
+
+.container-header-right .arco-switch {
+  margin-right: 16px;
+}
+
+/* Ensure dropdown menu items are styled correctly for theme */
+.arco-dropdown-menu .arco-dropdown-option {
+  color: var(--color-text-2);
+}
+
+.arco-dropdown-menu .arco-dropdown-option:hover {
+  background-color: var(--color-fill-2);
+  color: var(--color-text-1);
+} 

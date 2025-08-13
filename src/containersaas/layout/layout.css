@@ -1,0 +1,129 @@
+/* General Layout Styles */
+.container-layout {
+  height: 100vh;
+  background-color: var(--color-bg-1);
+}
+
+.container-layout-sider {
+  box-shadow: 2px 0 8px 0 rgba(0, 0, 0, 0.05);
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.container-layout-sider .arco-menu {
+  border-right: 0;
+}
+
+.container-layout-sider .arco-menu ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.container-layout-sider .arco-menu ::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    border-radius: 3px;
+    background-color: var(--color-text-4, #C9CDD4);
+}
+
+.container-layout-sider .arco-menu ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-text-3, #86909C);
+}
+
+.container-layout-header {
+  background-color: var(--color-bg-2);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px; /* Adjusted padding */
+  height: 64px;
+  line-height: 64px;
+}
+
+.container-layout-content {
+  background-color: var(--color-bg-1);
+  padding: 24px;
+  margin: 0;
+  min-height: calc(100vh - 64px - 48px - 48px); /* Header - Footer - ContentPaddings */
+  overflow-y: auto;
+}
+
+.container-sidebar-logo {
+  transition: padding .2s cubic-bezier(.34, .69, .1, 1);
+}
+
+.container-sidebar-logo.collapsed {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Smartainer Layout Styles */
+
+/* 确保正确高亮活跃菜单项 */
+.arco-menu-inner .arco-menu-item-active {
+  color: var(--color-primary-hover);
+  font-weight: 500;
+}
+
+.arco-menu-inner .arco-menu-selected {
+  background-color: var(--color-primary-light-1);
+  color: var(--color-primary);
+}
+
+/* 悬停效果 */
+.arco-menu-inner .arco-menu-selected:hover {
+  background-color: var(--color-primary-light-2);
+}
+
+.arco-menu-inner .arco-menu-item:hover {
+  color: var(--color-primary-hover);
+}
+
+/* 下拉菜单样式 */
+.arco-dropdown-menu .arco-dropdown-option {
+  transition: all 0.2s ease;
+}
+
+.arco-dropdown-menu .arco-dropdown-option:hover {
+  background-color: var(--color-fill-2);
+  color: var(--color-text-1);
+}
+
+/* 让面包屑导航更加明显 */
+.arco-breadcrumb .arco-breadcrumb-item a {
+  color: var(--color-text-2);
+  transition: color 0.2s ease;
+}
+
+.arco-breadcrumb .arco-breadcrumb-item a:hover {
+  color: var(--color-primary-hover);
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border-radius: 3px;
+  background-color: var(--color-text-4);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-text-3);
+}
+
+/* 卡片样式 */
+.dashboard-card {
+  transition: all 0.3s ease;
+  border: 1px solid var(--color-border);
+}
+
+.dashboard-card:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+} 

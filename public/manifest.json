@@ -1,0 +1,26 @@
+{
+  "name": "Wo AI！- AI驱动的国际物流智能平台",
+  "short_name": "Wo AI！",
+  "description": "AI驱动的国际物流智能平台，让国际物流更简单。提供AI沃宝、文件识别、超级运价、智能BI等创新功能。",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#7466F0",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/logo192.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/logo512.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512"
+    }
+  ]
+}

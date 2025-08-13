@@ -1,0 +1,239 @@
+/* 页签组件样式 */
+.tabs-component {
+  background: #ffffff;
+  border-bottom: 1px solid #e5e6eb;
+  padding: 0 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+/* 页签容器样式 */
+.tabs-container {
+  margin: 0;
+}
+
+.tabs-container .arco-tabs-header {
+  margin: 0;
+  border: none;
+  background: transparent;
+}
+
+.tabs-container .arco-tabs-header-nav {
+  background: transparent;
+}
+
+/* 页签项样式 */
+.tabs-container .arco-tabs-tab {
+  background: #f7f8fa;
+  border: 1px solid #e5e6eb;
+  border-radius: 6px 6px 0 0;
+  margin-right: 0; /* 移除页签间隔，使其紧贴 */
+  padding: 8px 12px;
+  color: #4e5969;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  position: relative;
+  min-width: 80px;
+  max-width: 200px;
+}
+
+.tabs-container .arco-tabs-tab:hover {
+  background: #f2f3f5;
+  color: #1d2129;
+}
+
+.tabs-container .arco-tabs-tab-active {
+  background: #ffffff;
+  border-bottom-color: #ffffff;
+  color: #165dff;
+  font-weight: 500;
+  z-index: 1;
+}
+
+.tabs-container .arco-tabs-tab-active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #165dff;
+  border-radius: 1px;
+}
+
+/* 页签标题容器 */
+.tab-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-width: 0;
+}
+
+/* 页签文本 */
+.tab-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 4px;
+}
+
+/* 关闭按钮 */
+.tab-close-btn {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin-left: 4px;
+  border-radius: 2px;
+  opacity: 0.6;
+  transition: all 0.2s ease;
+}
+
+.tab-close-btn:hover {
+  opacity: 1;
+  background: rgba(22, 93, 255, 0.1);
+  color: #165dff;
+}
+
+.tab-close-btn .arco-icon {
+  font-size: 12px;
+}
+
+/* 页签内容区域 */
+.tabs-container .arco-tabs-content {
+  display: none;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .tabs-component {
+    padding: 0 8px;
+  }
+  
+  .tabs-container .arco-tabs-tab {
+    padding: 6px 8px;
+    font-size: 12px;
+    min-width: 60px;
+    max-width: 120px;
+  }
+  
+  .tab-text {
+    margin-right: 2px;
+  }
+  
+  .tab-close-btn {
+    width: 14px;
+    height: 14px;
+    margin-left: 2px;
+  }
+}
+
+/* 滚动条样式优化 */
+.tabs-container .arco-tabs-header-nav-wrap {
+  scrollbar-width: thin;
+  scrollbar-color: #c9cdd4 transparent;
+}
+
+.tabs-container .arco-tabs-header-nav-wrap::-webkit-scrollbar {
+  height: 4px;
+}
+
+.tabs-container .arco-tabs-header-nav-wrap::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tabs-container .arco-tabs-header-nav-wrap::-webkit-scrollbar-thumb {
+  background: #c9cdd4;
+  border-radius: 2px;
+}
+
+.tabs-container .arco-tabs-header-nav-wrap::-webkit-scrollbar-thumb:hover {
+  background: #a9aeb8;
+}
+
+/* 动画效果 */
+.tabs-container .arco-tabs-tab {
+  transform: translateY(0);
+}
+
+.tabs-container .arco-tabs-tab-active {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* 页签指示器隐藏 */
+.tabs-container .arco-tabs-header-nav-ink {
+  display: none;
+}
+
+/* 页签添加按钮区域预留 */
+.tabs-container .arco-tabs-header-extra {
+  margin-left: 8px;
+}
+
+/* 右键菜单样式 */
+.tab-context-menu {
+  user-select: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.context-menu-item {
+  white-space: nowrap;
+}
+
+.context-menu-item:hover {
+  background-color: #f7f8fa !important;
+}
+
+.context-menu-item:first-child {
+  margin-top: 0;
+}
+
+.context-menu-item:last-child {
+  margin-bottom: 0;
+}
+
+/* 页签标题右键菜单触发区域 */
+.tab-title {
+  user-select: none;
+}
+
+/* 深色主题适配 */
+@media (prefers-color-scheme: dark) {
+  .tabs-component {
+    background: #17171a;
+    border-bottom-color: #2e2e30;
+  }
+  
+  .tabs-container .arco-tabs-tab {
+    background: #232324;
+    border-color: #2e2e30;
+    color: #c9cdd4;
+  }
+  
+  .tabs-container .arco-tabs-tab:hover {
+    background: #2e2e30;
+    color: #ffffff;
+  }
+  
+  .tabs-container .arco-tabs-tab-active {
+    background: #17171a;
+    color: #165dff;
+  }
+  
+  /* 深色主题右键菜单 */
+  .tab-context-menu {
+    background: #232324 !important;
+    border-color: #2e2e30 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+  }
+  
+  .context-menu-item {
+    color: #c9cdd4 !important;
+  }
+  
+  .context-menu-item:hover {
+    background-color: #2e2e30 !important;
+  }
+}

@@ -1,0 +1,58 @@
+<svg width="160" height="160" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+  <rect width="160" height="160" fill="#ffffff" stroke="#e5e5e5" stroke-width="2"/>
+  <g fill="#000000">
+    <!-- 模拟二维码模式 - 小红书风格 -->
+    <!-- 顶部边框 -->
+    <rect x="20" y="20" width="8" height="8"/>
+    <rect x="44" y="20" width="8" height="8"/>
+    <rect x="56" y="20" width="8" height="8"/>
+    <rect x="80" y="20" width="8" height="8"/>
+    <rect x="92" y="20" width="8" height="8"/>
+    <rect x="104" y="20" width="8" height="8"/>
+    <rect x="128" y="20" width="8" height="8"/>
+    
+    <!-- 定位图案左上 -->
+    <rect x="20" y="20" width="36" height="36" fill="none" stroke="#000" stroke-width="3"/>
+    <rect x="26" y="26" width="24" height="24" fill="none" stroke="#000" stroke-width="2"/>
+    <rect x="32" y="32" width="12" height="12"/>
+    
+    <!-- 定位图案右上 -->
+    <rect x="104" y="20" width="36" height="36" fill="none" stroke="#000" stroke-width="3"/>
+    <rect x="110" y="26" width="24" height="24" fill="none" stroke="#000" stroke-width="2"/>
+    <rect x="116" y="32" width="12" height="12"/>
+    
+    <!-- 定位图案左下 -->
+    <rect x="20" y="104" width="36" height="36" fill="none" stroke="#000" stroke-width="3"/>
+    <rect x="26" y="110" width="24" height="24" fill="none" stroke="#000" stroke-width="2"/>
+    <rect x="32" y="116" width="12" height="12"/>
+    
+    <!-- 随机数据点 - 第三种模式 -->
+    <rect x="68" y="32" width="8" height="8"/>
+    <rect x="104" y="32" width="8" height="8"/>
+    <rect x="32" y="44" width="8" height="8"/>
+    <rect x="56" y="44" width="8" height="8"/>
+    <rect x="92" y="44" width="8" height="8"/>
+    <rect x="44" y="56" width="8" height="8"/>
+    <rect x="80" y="56" width="8" height="8"/>
+    <rect x="104" y="56" width="8" height="8"/>
+    <rect x="32" y="68" width="8" height="8"/>
+    <rect x="68" y="68" width="8" height="8"/>
+    <rect x="116" y="68" width="8" height="8"/>
+    <rect x="56" y="80" width="8" height="8"/>
+    <rect x="80" y="80" width="8" height="8"/>
+    <rect x="128" y="80" width="8" height="8"/>
+    <rect x="44" y="92" width="8" height="8"/>
+    <rect x="92" y="92" width="8" height="8"/>
+    <rect x="116" y="92" width="8" height="8"/>
+    <rect x="68" y="104" width="8" height="8"/>
+    <rect x="104" y="104" width="8" height="8"/>
+    <rect x="128" y="104" width="8" height="8"/>
+    <rect x="56" y="116" width="8" height="8"/>
+    <rect x="80" y="116" width="8" height="8"/>
+    <rect x="116" y="116" width="8" height="8"/>
+    <rect x="68" y="128" width="8" height="8"/>
+    <rect x="92" y="128" width="8" height="8"/>
+    <rect x="128" y="128" width="8" height="8"/>
+  </g>
+  <text x="80" y="150" text-anchor="middle" font-family="Arial" font-size="10" fill="#666">小红书二维码</text>
+</svg> 

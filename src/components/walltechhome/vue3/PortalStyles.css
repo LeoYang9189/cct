@@ -1,0 +1,1175 @@
+/* 门户页面专用样式 */
+
+/* 基础布局 */
+.portal-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* 标题样式 */
+.portal-heading {
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.portal-heading-xl {
+  font-size: 2.5rem;
+  line-height: 1.2;
+}
+
+.portal-heading-lg {
+  font-size: 2rem;
+  line-height: 1.3;
+}
+
+.portal-heading-md {
+  font-size: 1.5rem;
+  line-height: 1.4;
+}
+
+/* 渐变背景和文字 */
+.portal-gradient-blue {
+  background: linear-gradient(to right, #3182ce, #63b3ed);
+}
+
+.portal-gradient-text {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(to right, #3182ce, #63b3ed);
+}
+
+/* 卡片样式 */
+.portal-card {
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.portal-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* 按钮样式 */
+.portal-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.portal-button-primary {
+  background: linear-gradient(to right, #3182ce, #63b3ed);
+  color: white;
+  border: none;
+}
+
+.portal-button-primary:hover {
+  filter: brightness(110%);
+}
+
+.portal-button-outline {
+  background: transparent;
+  border: 1px solid #3182ce;
+  color: #3182ce;
+}
+
+.portal-button-outline:hover {
+  background-color: #ebf8ff;
+}
+
+/* 特性图标容器 */
+.portal-feature-icon {
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  background-color: #ebf8ff;
+  margin-bottom: 1rem;
+}
+
+/* 动画效果 */
+@keyframes portalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.portal-animate-fade-in {
+  animation: portalFadeIn 0.5s ease forwards;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .portal-heading-xl {
+    font-size: 2rem;
+  }
+  
+  .portal-heading-lg {
+    font-size: 1.75rem;
+  }
+  
+  .portal-heading-md {
+    font-size: 1.25rem;
+  }
+}
+
+/* 波浪效果 */
+.portal-wave {
+  position: relative;
+  overflow: hidden;
+}
+
+.portal-wave::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -10px;
+  height: 10px;
+  background: 
+    radial-gradient(
+      2px 2px at 40px 70px,
+      #3182ce 50%,
+      transparent 50%
+    ),
+    radial-gradient(
+      2px 2px at 80px 100px,
+      #63b3ed 50%,
+      transparent 50%
+    ),
+    radial-gradient(
+      2px 2px at 120px 40px,
+      #90cdf4 50%,
+      transparent 50%
+    );
+  background-size: 180px 120px;
+  animation: portalWave 6s linear infinite;
+}
+
+@keyframes portalWave {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 180px 0;
+  }
+}
+
+/* =================================
+   认证页面主体样式
+   ================================= */
+
+.auth-container {
+  background: 
+    linear-gradient(135deg, #e3f2fd 0%, #fff3e0 20%, #f3e5f5 35%, #ffffff 50%, #e8f5e8 65%, #fff8e1 80%, #e1f5fe 100%),
+    linear-gradient(45deg, rgba(129, 212, 250, 0.1) 0%, rgba(255, 224, 178, 0.1) 50%, rgba(197, 202, 233, 0.1) 100%);
+  position: relative;
+  overflow: hidden;
+  animation: backgroundShift 15s ease-in-out infinite;
+}
+
+.auth-background {
+  background: 
+    radial-gradient(ellipse at 20% 50%, rgba(0, 188, 212, 0.15) 0%, rgba(0, 188, 212, 0.05) 40%, transparent 70%),
+    radial-gradient(ellipse at 80% 20%, rgba(255, 183, 77, 0.15) 0%, rgba(255, 183, 77, 0.05) 40%, transparent 70%),
+    radial-gradient(ellipse at 40% 80%, rgba(129, 212, 250, 0.15) 0%, rgba(129, 212, 250, 0.05) 40%, transparent 70%),
+    radial-gradient(ellipse at 60% 30%, rgba(255, 224, 178, 0.12) 0%, rgba(255, 224, 178, 0.04) 40%, transparent 70%),
+    radial-gradient(ellipse at 25% 85%, rgba(224, 247, 250, 0.18) 0%, rgba(224, 247, 250, 0.06) 40%, transparent 70%),
+    radial-gradient(ellipse at 75% 70%, rgba(197, 202, 233, 0.12) 0%, rgba(197, 202, 233, 0.04) 40%, transparent 70%),
+    radial-gradient(ellipse at 10% 30%, rgba(255, 245, 157, 0.10) 0%, rgba(255, 245, 157, 0.03) 40%, transparent 70%);
+  animation: auroraFlow 20s ease-in-out infinite;
+}
+
+/* 网格背景 */
+.grid-background {
+  background-image: 
+    linear-gradient(rgba(129, 212, 250, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(129, 212, 250, 0.08) 1px, transparent 1px),
+    radial-gradient(circle at 25% 25%, rgba(255, 183, 77, 0.03) 2px, transparent 2px),
+    radial-gradient(circle at 75% 75%, rgba(197, 202, 233, 0.03) 2px, transparent 2px);
+  background-size: 60px 60px, 60px 60px, 120px 120px, 120px 120px;
+  animation: gridMove 25s linear infinite, gridShimmer 12s ease-in-out infinite;
+}
+
+@keyframes gridMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(60px, 60px); }
+}
+
+@keyframes gridShimmer {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* 背景动画效果 */
+@keyframes backgroundShift {
+  0%, 100% { 
+    filter: hue-rotate(0deg) brightness(100%) saturate(100%); 
+  }
+  33% { 
+    filter: hue-rotate(10deg) brightness(105%) saturate(110%); 
+  }
+  66% { 
+    filter: hue-rotate(-5deg) brightness(102%) saturate(105%); 
+  }
+}
+
+@keyframes auroraFlow {
+  0%, 100% { 
+    transform: translateX(0%) translateY(0%) scale(1);
+    opacity: 1;
+  }
+  25% { 
+    transform: translateX(2%) translateY(-1%) scale(1.02);
+    opacity: 0.9;
+  }
+  50% { 
+    transform: translateX(-1%) translateY(1%) scale(0.98);
+    opacity: 1.1;
+  }
+  75% { 
+    transform: translateX(1%) translateY(-0.5%) scale(1.01);
+    opacity: 0.95;
+  }
+}
+
+/* =================================
+   浮动装饰球
+   ================================= */
+
+.floating-orb {
+  position: absolute;
+  border-radius: 50%;
+  background: 
+    linear-gradient(45deg, rgba(255, 255, 255, 0.2), rgba(224, 247, 250, 0.15), rgba(255, 248, 225, 0.15)),
+    radial-gradient(circle at 30% 30%, rgba(129, 212, 250, 0.3), transparent 50%),
+    radial-gradient(circle at 70% 70%, rgba(255, 183, 77, 0.2), transparent 50%);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  animation: float 15s ease-in-out infinite, orbGlow 8s ease-in-out infinite;
+  box-shadow: 
+    0 8px 32px rgba(0, 188, 212, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 0 20px rgba(129, 212, 250, 0.1);
+}
+
+.orb-1 {
+  width: 120px;
+  height: 120px;
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.orb-2 {
+  width: 80px;
+  height: 80px;
+  top: 20%;
+  right: 15%;
+  animation-delay: -3s;
+}
+
+.orb-3 {
+  width: 150px;
+  height: 150px;
+  bottom: 20%;
+  left: 5%;
+  animation-delay: -6s;
+}
+
+.orb-4 {
+  width: 100px;
+  height: 100px;
+  bottom: 30%;
+  right: 10%;
+  animation-delay: -9s;
+}
+
+.orb-5 {
+  width: 60px;
+  height: 60px;
+  top: 50%;
+  left: 50%;
+  animation-delay: -12s;
+}
+
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px) translateX(0px) rotate(0deg); 
+  }
+  33% { 
+    transform: translateY(-30px) translateX(20px) rotate(120deg); 
+  }
+  66% { 
+    transform: translateY(20px) translateX(-20px) rotate(240deg); 
+  }
+}
+
+@keyframes orbGlow {
+  0%, 100% {
+    box-shadow: 
+      0 8px 32px rgba(0, 188, 212, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4),
+      0 0 20px rgba(129, 212, 250, 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 12px 40px rgba(255, 183, 77, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6),
+      0 0 30px rgba(255, 183, 77, 0.15);
+  }
+}
+
+/* =================================
+   Logo样式
+   ================================= */
+
+.logo-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  cursor: pointer;
+}
+
+.logo-inner {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #00bcd4 0%, #4dd0e1 50%, #ffb74d 100%);
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 20px 40px rgba(0, 188, 212, 0.25);
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.logo-glow {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  background: linear-gradient(135deg, #00bcd4, #4dd0e1, #ffb74d, #81d4fa);
+  border-radius: 34px;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 1;
+  animation: logoGlow 3s ease-in-out infinite;
+}
+
+.logo-container:hover .logo-inner {
+  transform: scale(1.05);
+  box-shadow: 0 25px 50px rgba(0, 188, 212, 0.35);
+}
+
+.logo-container:hover .logo-glow {
+  opacity: 0.8;
+}
+
+@keyframes logoGlow {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.02); }
+}
+
+/* =================================
+   主卡片样式
+   ================================= */
+
+.auth-main-card-wide {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  box-shadow: 
+    0 24px 48px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  position: relative;
+}
+
+.auth-main-card-wide::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+}
+
+/* 内容网格布局 */
+.auth-content-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  min-height: 420px;
+}
+
+.auth-left-section {
+  padding: 32px 48px;
+}
+
+.auth-right-section {
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  border-left: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+}
+
+.auth-decoration {
+  text-align: center;
+  max-width: 200px;
+}
+
+.decoration-icon {
+  margin-bottom: 20px;
+  animation: decorationFloat 3s ease-in-out infinite;
+}
+
+@keyframes decorationFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* 响应式调整 */
+@media (max-width: 1024px) {
+  .auth-content-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .auth-right-section {
+    border-left: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 20px 40px;
+  }
+  
+  .auth-decoration {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    max-width: none;
+  }
+  
+  .decoration-icon {
+    margin-right: 20px;
+    margin-bottom: 0;
+  }
+}
+
+/* =================================
+   标签页切换样式
+   ================================= */
+
+.auth-tab-container {
+  display: flex;
+  background: #f8fafc;
+  border-radius: 20px;
+  padding: 6px;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 16px 24px;
+  border: none;
+  background: none;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  color: #64748b;
+  cursor: pointer;
+}
+
+.auth-tab.active {
+  background: white;
+  color: #3b82f6;
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.auth-tab:hover:not(.active) {
+  color: #475569;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* =================================
+   输入框样式
+   ================================= */
+
+.auth-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.auth-input-icon {
+  position: absolute;
+  left: 16px;
+  z-index: 2;
+  color: #9ca3af;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.auth-input-field {
+  width: 100%;
+  height: 44px !important;
+  padding-left: 48px !important;
+  padding-right: 16px !important;
+  border: 2px solid #e5e7eb !important;
+  border-radius: 12px !important;
+  font-size: 15px !important;
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(10px) !important;
+  transition: all 0.3s ease !important;
+}
+
+.auth-input-field:hover {
+  border-color: #d1d5db !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+}
+
+.auth-input-field:focus {
+  border-color: #3b82f6 !important;
+  background: white !important;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1) !important;
+}
+
+.auth-input-field:focus + .auth-input-icon,
+.auth-input-container:focus-within .auth-input-icon {
+  color: #3b82f6;
+  transform: scale(1.1);
+}
+
+/* =================================
+   验证码按钮样式
+   ================================= */
+
+.auth-code-button {
+  min-width: 120px;
+  height: 44px;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(59, 130, 246, 0.3);
+}
+
+.auth-code-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+.auth-code-button:disabled {
+  background: #d1d5db;
+  color: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* =================================
+   复选框样式
+   ================================= */
+
+.auth-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #d1d5db;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  appearance: none;
+  position: relative;
+}
+
+.auth-checkbox:checked {
+  background: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.auth-checkbox:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.auth-checkbox:hover {
+  border-color: #3b82f6;
+}
+
+/* =================================
+   提交按钮样式
+   ================================= */
+
+.auth-submit-button {
+  width: 100% !important;
+  height: 48px !important;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: white !important;
+  box-shadow: 
+    0 4px 16px rgba(59, 130, 246, 0.3),
+    0 2px 8px rgba(59, 130, 246, 0.2) !important;
+  transition: all 0.3s ease !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-submit-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.auth-submit-button:hover::before {
+  left: 100%;
+}
+
+.auth-submit-button:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 
+    0 8px 24px rgba(59, 130, 246, 0.4),
+    0 4px 12px rgba(59, 130, 246, 0.3) !important;
+}
+
+.auth-submit-button:active {
+  transform: translateY(-1px) !important;
+}
+
+/* =================================
+   底部切换区域
+   ================================= */
+
+.auth-footer {
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  padding: 24px 32px;
+  text-align: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.auth-switch-button {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(59, 130, 246, 0.2);
+  min-width: 120px;
+}
+
+.auth-switch-button:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
+}
+
+/* =================================
+   加载动画
+   ================================= */
+
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* =================================
+   现代化弹窗样式
+   ================================= */
+
+.modern-modal .arco-modal-content {
+  border-radius: 12px !important;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+.modal-header {
+  background: #ffffff;
+  padding: 24px 32px 20px;
+  text-align: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.modal-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+  display: inline-block;
+}
+
+.modal-content {
+  padding: 24px 32px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: #ffffff;
+}
+
+.agreement-section {
+  padding: 16px 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 3px solid #6b7280;
+  margin-bottom: 16px;
+}
+
+.agreement-section:hover {
+  background: #f3f4f6;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 10px;
+}
+
+.modal-footer {
+  background: #ffffff;
+  padding: 20px 32px;
+  text-align: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.modern-button {
+  background: #3b82f6 !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  padding: 12px 24px !important;
+  color: white !important;
+  font-size: 14px !important;
+  transition: all 0.2s ease !important;
+  min-width: 120px !important;
+}
+
+.modern-button:hover {
+  background: #2563eb !important;
+}
+
+.modern-button:active {
+  background: #1d4ed8 !important;
+}
+
+/* =================================
+   自定义滚动条
+   ================================= */
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* =================================
+   响应式设计
+   ================================= */
+
+@media (max-width: 768px) {
+  .auth-main-card-wide {
+    margin: 16px;
+    border-radius: 20px;
+  }
+  
+  .auth-left-section {
+    padding: 20px 24px;
+  }
+  
+  .logo-container {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .logo-inner {
+    border-radius: 24px;
+  }
+  
+  .auth-input-field {
+    height: 42px !important;
+    padding-left: 44px !important;
+  }
+  
+  .auth-code-button {
+    height: 42px;
+    min-width: 100px;
+    font-size: 12px;
+  }
+  
+  .auth-submit-button {
+    height: 44px !important;
+    font-size: 15px !important;
+  }
+  
+  .floating-orb {
+    display: none;
+  }
+  
+  .modal-header {
+    padding: 24px 20px 16px;
+  }
+  
+  .modal-content {
+    padding: 20px;
+  }
+  
+  .modal-footer {
+    padding: 16px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-main-card-wide {
+    margin: 12px;
+    border-radius: 16px;
+  }
+  
+  .auth-left-section {
+    padding: 16px 20px;
+  }
+  
+  .auth-footer {
+    padding: 16px 20px;
+  }
+  
+  .auth-tab {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+  
+  .modern-button {
+    min-width: 120px !important;
+    padding: 12px 20px !important;
+    font-size: 14px !important;
+  }
+}
+
+/* =================================
+   Portal 首页样式
+   ================================= */
+
+.portal-hero {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 80vh;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
+    url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') no-repeat center center;
+  background-size: cover;
+}
+
+.feature-card {
+  transition: all 0.3s ease;
+  border: 1px solid #e5e7eb;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border-color: #3b82f6;
+}
+
+.feature-icon {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+  transform: scale(1.1);
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
+}
+
+/* 统计数据动画 */
+.stat-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-4px);
+}
+
+/* 按钮样式 */
+.portal-btn-primary {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  border: none;
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.portal-btn-primary:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+}
+
+.portal-btn-outline {
+  border: 2px solid #3b82f6;
+  color: #3b82f6;
+  background: transparent;
+  padding: 12px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.portal-btn-outline:hover {
+  background: #3b82f6;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+}
+
+/* 导航栏样式 */
+.portal-header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.portal-header.scrolled {
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}
+
+.nav-link {
+  color: #374151;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: #3b82f6;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #3b82f6;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* 毛玻璃效果 */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 渐变文字 */
+.gradient-text {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 平滑过渡 */
+* {
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 表单验证样式 */
+.arco-form-item-error .arco-input {
+  border-color: #ef4444 !important;
+}
+
+.arco-form-item-error .arco-input:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+/* =================================
+   SSO登录按钮样式
+   ================================= */
+
+.sso-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  margin: 0 8px;
+  border: 2px solid transparent;
+  border-radius: 1rem;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-width: 120px;
+  text-decoration: none;
+  position: relative;
+}
+
+.sso-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.sso-button.sso-etower {
+  border-color: #3b82f6;
+}
+
+.sso-button.sso-etower:hover {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.sso-button.sso-cargoware {
+  border-color: #14b8a6;
+}
+
+.sso-button.sso-cargoware:hover {
+  border-color: #0d9488;
+  background: #f0fdfa;
+}
+
+.sso-icon {
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 1rem;
+  background: rgba(59, 130, 246, 0.1);
+  transition: all 0.3s ease;
+}
+
+.sso-button.sso-cargoware .sso-icon {
+  background: rgba(20, 184, 166, 0.1);
+}
+
+.sso-text {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.sso-button:hover .sso-text {
+  color: #111827;
+}
+
+.sso-button:hover .sso-icon {
+  transform: scale(1.1);
+}
+
+.sso-button:active {
+  transform: translateY(0px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 响应式设计 */
+@media (max-width: 640px) {
+  .sso-button {
+    min-width: 100px;
+    padding: 1rem;
+    margin: 0 6px;
+  }
+  
+  .sso-icon {
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .sso-text {
+    font-size: 0.8rem;
+  }
+} 

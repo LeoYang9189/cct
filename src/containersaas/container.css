@@ -1,0 +1,82 @@
+/* 智慧集装箱系统样式 */
+
+/* 卡片样式 */
+.dashboard-card {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.dashboard-card:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* 表格样式 */
+.arco-table-th {
+  background-color: #f5f7fa !important;
+  font-weight: 600;
+}
+
+.arco-table-hover .arco-table-tr:hover .arco-table-td {
+  background-color: #f2f3f5;
+}
+
+/* 列表样式 */
+.demo-list .arco-list-item {
+  transition: all 0.2s ease;
+}
+
+.demo-list .arco-list-item:hover {
+  background-color: #f7f8fa;
+}
+
+/* 按钮样式 */
+.arco-btn-primary {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+}
+
+.arco-btn-primary:hover {
+  background-color: var(--color-primary-hover) !important;
+  border-color: var(--color-primary-hover) !important;
+}
+
+/* 标签样式 */
+.arco-tag {
+  border-radius: 4px;
+}
+
+/* 导航菜单 */
+.arco-menu-selected {
+  color: var(--color-primary) !important;
+  font-weight: 500;
+}
+
+.arco-menu-item:hover {
+  color: var(--color-primary-hover) !important;
+}
+
+/* 输入框样式 */
+.arco-input:focus, 
+.arco-input-focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 1px rgba(var(--primary-rgb), 0.2) !important;
+}
+
+/* 下拉菜单 */
+.arco-select-view:focus,
+.arco-select-view-active {
+  border-color: var(--color-primary) !important;
+}
+
+/* 修改主色调 - 蓝色主题 */
+:root {
+  --color-primary: #165DFF; /* Arco Design 默认蓝 */
+  --color-primary-hover: #4080FF; /* 较浅的蓝色 */
+  --color-primary-active: #0E42D2; /* 较深的蓝色 */
+  --color-primary-light-1: #E8F3FF; /* 最浅的蓝色 */
+  --color-primary-light-2: #BEDFFF; /* 次浅的蓝色 */
+  --color-primary-light-3: #94CCFF; /* 适中的浅蓝 */
+  --color-primary-light-4: #6AAEFF; /* 略深的浅蓝 */
+  --primary-rgb: 22, 93, 255; /* 对应 #165DFF 的 RGB 值 */
+} 
