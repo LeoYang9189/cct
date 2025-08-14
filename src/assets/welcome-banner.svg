@@ -1,0 +1,76 @@
+<svg width="800" height="300" viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#E6F3FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFE4E1;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:0.8" />
+      <stop offset="50%" style="stop-color:#7B68EE;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#FF6B6B;stop-opacity:0.4" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="800" height="300" fill="url(#skyGradient)"/>
+  
+  <!-- 波浪形状 -->
+  <path d="M0,150 Q200,100 400,150 T800,150 L800,300 L0,300 Z" fill="url(#waveGradient)"/>
+  
+  <!-- 气泡 -->
+  <circle cx="100" cy="80" r="8" fill="white" opacity="0.6"/>
+  <circle cx="200" cy="60" r="5" fill="white" opacity="0.4"/>
+  <circle cx="700" cy="90" r="6" fill="white" opacity="0.5"/>
+  
+  <!-- 集装箱 -->
+  <rect x="580" y="120" width="40" height="25" rx="2" fill="#4A90E2" opacity="0.8"/>
+  <rect x="585" y="125" width="30" height="15" fill="white" opacity="0.3"/>
+  
+  <!-- 包裹 -->
+  <rect x="720" y="110" width="20" height="20" rx="3" fill="#FF9500" opacity="0.7"/>
+  <rect x="725" y="115" width="10" height="10" fill="white" opacity="0.4"/>
+  
+  <!-- 机器人 -->
+  <g transform="translate(420,180)">
+    <circle cx="0" cy="0" r="12" fill="#E8E8E8"/>
+    <rect x="-8" y="5" width="16" height="20" rx="3" fill="#D0D0D0"/>
+    <circle cx="-4" cy="-3" r="2" fill="#4A90E2"/>
+    <circle cx="4" cy="-3" r="2" fill="#4A90E2"/>
+    <rect x="-2" y="2" width="4" height="2" rx="1" fill="#666"/>
+  </g>
+  
+  <!-- 飞机 -->
+  <g transform="translate(540,260)">
+    <path d="M0,0 L20,0 L25,-5 L30,0 L25,5 L20,0 Z" fill="white" opacity="0.8"/>
+    <path d="M5,-2 L15,-8 L20,-5 L10,2 Z" fill="white" opacity="0.6"/>
+    <path d="M5,2 L15,8 L20,5 L10,-2 Z" fill="white" opacity="0.6"/>
+  </g>
+  
+  <!-- 另一架飞机 -->
+  <g transform="translate(680,270)">
+    <path d="M0,0 L15,0 L18,-3 L22,0 L18,3 L15,0 Z" fill="white" opacity="0.7"/>
+    <path d="M3,-1 L10,-5 L15,-3 L8,1 Z" fill="white" opacity="0.5"/>
+    <path d="M3,1 L10,5 L15,3 L8,-1 Z" fill="white" opacity="0.5"/>
+  </g>
+  
+  <!-- 对话气泡 -->
+  <g transform="translate(680,230)">
+    <ellipse cx="0" cy="0" rx="15" ry="10" fill="white" opacity="0.8"/>
+    <circle cx="-5" cy="-2" r="1.5" fill="#4A90E2"/>
+    <circle cx="0" cy="-2" r="1.5" fill="#4A90E2"/>
+    <circle cx="5" cy="-2" r="1.5" fill="#4A90E2"/>
+  </g>
+  
+  <!-- WiFi信号图标 -->
+  <g transform="translate(750,350)">
+    <path d="M0,0 Q-10,-10 -20,0" stroke="white" stroke-width="2" fill="none" opacity="0.6"/>
+    <path d="M0,0 Q-6,-6 -12,0" stroke="white" stroke-width="2" fill="none" opacity="0.8"/>
+    <circle cx="0" cy="0" r="2" fill="white"/>
+  </g>
+  
+  <!-- 装饰性元素 -->
+  <rect x="50" y="200" width="8" height="8" rx="1" fill="white" opacity="0.3" transform="rotate(45 54 204)"/>
+  <rect x="150" y="180" width="6" height="6" rx="1" fill="white" opacity="0.4" transform="rotate(45 153 183)"/>
+  <rect x="300" y="220" width="10" height="10" rx="1" fill="white" opacity="0.2" transform="rotate(45 305 225)"/>
+</svg>

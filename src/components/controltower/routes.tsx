@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import Welcome from './pages/Welcome';
 import Dashboard from './pages/Dashboard';
 import ControlTowerPanel from './pages/ControlTowerPanel';
 import ControlTowerPanelTemp from './pages/ControlTowerPanelTemp';
@@ -99,7 +100,8 @@ import ApiSettings from './pages/ApiSettings';
 // BI统计分析
 import BiAnalytics from './bi/BiAnalytics';
 
-// 销售百宝箱页面
+
+// 导入AI相关页面
 import AiCustomerAcquisition from './pages/AiCustomerAcquisition';
 import CustomerManagement from './pages/CustomerManagement';
 import ContactManagement from './pages/ContactManagement';
@@ -112,18 +114,36 @@ const DefaultRoute: React.FC = () => {
   const location = useLocation();
   const urlParams = new URLSearchParams(location.search);
   const isPersonalMode = urlParams.get('mode') === 'personal';
+  const [isFirstLogin, setIsFirstLogin] = useState<boolean | null>(null);
+  
+  useEffect(() => {
+    // 检查是否是首次登录
+    const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
+    setIsFirstLogin(!hasSeenWelcome);
+  }, []);
+  
+  // 如果还在检查状态，显示加载
+  if (isFirstLogin === null) {
+    return <div>Loading...</div>;
+  }
+  
+  // 如果是首次登录，显示欢迎界面
+  if (isFirstLogin && !isPersonalMode) {
+    return <Welcome />;
+  }
   
   if (isPersonalMode) {
     return <Navigate to="/controltower/user-profile?mode=personal" replace />;
   }
   
-  return <Dashboard />;
+  return <Navigate to="/controltower/dashboard" replace />;
 };
 
 const ControlTowerRoutes: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={<DefaultRoute />} />
+
       <Route path="/bi-analytics" element={<BiAnalytics />} />
       <Route path="/ui-standards" element={<UIStandards />} />
       <Route path="/dashboard" element={<Dashboard />} />
