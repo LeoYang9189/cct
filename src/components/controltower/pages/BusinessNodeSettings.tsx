@@ -10,15 +10,12 @@ import {
     Switch,
     Tag,
     Radio,
-    Popconfirm,
     Upload,
     Tabs
 } from '@arco-design/web-react';
 import {
     IconPlus,
-    IconEdit,
     IconDelete,
-    IconDragArrow,
     IconUpload,
     // IconSettings,
     IconBranch
@@ -74,7 +71,7 @@ const BusinessNodeSettings: React.FC = () => {
     const [currentBusinessType, setCurrentBusinessType] = useState<BusinessType>('sea');
     const [businessFlows, setBusinessFlows] = useState<BusinessFlow[]>([]);
     const [modalVisible, setModalVisible] = useState(false);
-    const [editingNode, setEditingNode] = useState<BusinessNode | null>(null);
+    const [editingNode] = useState<BusinessNode | null>(null); // setEditingNode暂时未使用
     const [tasks, setTasks] = useState<Task[]>([]);
     const [form] = Form.useForm();
 
@@ -853,56 +850,54 @@ const BusinessNodeSettings: React.FC = () => {
         // );
     // };
 
-    // 切换节点启用状态
-    const handleToggleNode = (nodeId: string, enabled: boolean) => {
-        setBusinessFlows(prev => prev.map(flow =>
-            flow.type === currentBusinessType
-                ? {
-                    ...flow,
-                    nodes: flow.nodes.map(node =>
-                        node.id === nodeId ? { ...node, enabled } : node
-                    )
-                }
-                : flow
-        ));
-        Message.success(enabled ? '节点已启用' : '节点已禁用');
-    };
+    // 这些函数暂时注释掉，因为相关UI组件还未实现
+    // const handleToggleNode = (nodeId: string, enabled: boolean) => {
+    //     setBusinessFlows(prev => prev.map(flow =>
+    //         flow.type === currentBusinessType
+    //             ? {
+    //                 ...flow,
+    //                 nodes: flow.nodes.map(node =>
+    //                     node.id === nodeId ? { ...node, enabled } : node
+    //                 )
+    //             }
+    //             : flow
+    //     ));
+    //     Message.success('节点删除成功');
+    // };
+    //     Message.success(enabled ? '节点已启用' : '节点已禁用');
+    // };
 
-    // 添加节点
-    const handleAddNode = (insertIndex?: number) => {
-        setEditingNode(null);
-        setTasks([]);
-        form.resetFields();
-        form.setFieldsValue({
-            insertIndex: insertIndex // 保存插入位置
-        });
-        setModalVisible(true);
-    };
+    // const handleAddNode = (insertIndex?: number) => {
+    //     setEditingNode(null);
+    //     setTasks([]);
+    //     form.resetFields();
+    //     form.setFieldsValue({
+    //         insertIndex: insertIndex // 保存插入位置
+    //     });
+    //     setModalVisible(true);
+    // };
 
-    // 编辑节点
-    const handleEdit = (node: BusinessNode) => {
-        setEditingNode(node);
-        setTasks(node.tasks || []);
-        form.setFieldsValue({
-            name: node.name,
-            description: node.description,
-            icon: node.icon
-        });
-        setModalVisible(true);
-    };
+    // const handleEdit = (node: BusinessNode) => {
+    //     setEditingNode(node);
+    //     setTasks(node.tasks || []);
+    //     form.setFieldsValue({
+    //         name: node.name,
+    //         description: node.description,
+    //         icon: node.icon
+    //     });
+    //     setModalVisible(true);
+    // };
 
-    // 删除节点
-    const handleDelete = (nodeId: string) => {
-        setBusinessFlows(prev => prev.map(flow =>
-            flow.type === currentBusinessType
-                ? {
-                    ...flow,
-                    nodes: flow.nodes.filter(node => node.id !== nodeId)
-                }
-                : flow
-        ));
-        Message.success('节点删除成功');
-    };
+    // const handleDelete = (nodeId: string) => {
+    //     setBusinessFlows(prev => prev.map(flow =>
+    //         flow.type === currentBusinessType
+    //             ? {
+    //                 ...flow,
+    //                 nodes: flow.nodes.filter(node => node.id !== nodeId)
+    //             }
+    //             : flow
+    //     ));
+
 
     // 保存节点
     const handleSave = async () => {

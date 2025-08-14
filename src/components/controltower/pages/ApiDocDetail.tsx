@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Typography, Tag, Button, Tabs, Input, Select } from '@arco-design/web-react';
 import { IconLeft, IconCode, IconCopy } from '@arco-design/web-react/icon';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const { Title, Text, Paragraph } = Typography;
 const { TabPane } = Tabs;
