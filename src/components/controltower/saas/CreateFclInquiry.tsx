@@ -1176,108 +1176,121 @@ ${costDetails.join('\n')}
 
   // 渲染费用明细表格
   const renderRateTable = (rateItems: RateItem[], containerTypes: string[]) => {
-    // 按费用类型分组
-    const containerRateItems = rateItems.filter(item => item.feeType === 'container');
-    const unitRateItems = rateItems.filter(item => item.feeType === 'non-container');
-
-    // 按箱计费表格列
-    const containerColumns = [
-      {
-        title: '费用名称',
-        dataIndex: 'feeName',
-        width: 120,
-      },
-      {
-        title: '币种',
-        dataIndex: 'currency',
-        width: 80,
-      },
-      ...containerTypes.map(type => ({
-        title: type.toUpperCase(),
-        dataIndex: type,
-        width: 100,
-        render: (_: string, record: RateItem) => {
-          return record.containerRates?.[type as keyof typeof record.containerRates] || '-';
-        }
-      })),
-      {
-        title: '备注',
-        dataIndex: 'remark',
-        width: 120,
-        render: (value: string) => value || '-'
+    // 创建附加费的mock数据，将海运费改为THC
+    const surchargeItems: RateItem[] = rateItems.map(item => {
+      if (item.feeName === '海运费') {
+        return {
+          ...item,
+          feeName: 'THC'
+        };
       }
-    ];
-
-    // 非按箱计费表格列
-    const unitColumns = [
-      {
-        title: '费用名称',
-        dataIndex: 'feeName',
-        width: 120,
-      },
-      {
-        title: '币种',
-        dataIndex: 'currency',
-        width: 80,
-      },
-      {
-        title: '单价',
-        dataIndex: 'unitPrice',
-        width: 100,
-      },
-      {
-        title: '单位',
-        dataIndex: 'unit',
-        width: 80,
-      },
-      {
-        title: '备注',
-        dataIndex: 'remark',
-        width: 120,
-        render: (value: string) => value || '-'
-      }
-    ];
+      return item;
+    });
 
     // 渲染表格内容的函数
-    const renderTableContent = () => (
-      <div className="space-y-4">
-        {/* 按箱计费表格 */}
-        {containerRateItems.length > 0 && (
-          <div>
-            <div className="text-sm font-medium text-gray-600 mb-2">按箱计费</div>
-            <Table
-              columns={containerColumns}
-              data={containerRateItems}
-              rowKey="id"
-              pagination={false}
-              size="small"
-              border={{
-                wrapper: true,
-                cell: true
-              }}
-            />
-          </div>
-        )}
+    const renderTableContent = (items: RateItem[]) => {
+      // 按费用类型分组
+      const containerRateItems = items.filter(item => item.feeType === 'container');
+      const unitRateItems = items.filter(item => item.feeType === 'non-container');
 
-        {/* 非按箱计费表格 */}
-        {unitRateItems.length > 0 && (
-          <div>
-            <div className="text-sm font-medium text-gray-600 mb-2">非按箱计费</div>
-            <Table
-              columns={unitColumns}
-              data={unitRateItems}
-              rowKey="id"
-              pagination={false}
-              size="small"
-              border={{
-                wrapper: true,
-                cell: true
-              }}
-            />
-          </div>
-        )}
-      </div>
-    );
+      // 按箱计费表格列
+      const containerColumns = [
+        {
+          title: '费用名称',
+          dataIndex: 'feeName',
+          width: 120,
+        },
+        {
+          title: '币种',
+          dataIndex: 'currency',
+          width: 80,
+        },
+        ...containerTypes.map(type => ({
+          title: type.toUpperCase(),
+          dataIndex: type,
+          width: 100,
+          render: (_: string, record: RateItem) => {
+            return record.containerRates?.[type as keyof typeof record.containerRates] || '-';
+          }
+        })),
+        {
+          title: '备注',
+          dataIndex: 'remark',
+          width: 120,
+          render: (value: string) => value || '-'
+        }
+      ];
+
+      // 非按箱计费表格列
+      const unitColumns = [
+        {
+          title: '费用名称',
+          dataIndex: 'feeName',
+          width: 120,
+        },
+        {
+          title: '币种',
+          dataIndex: 'currency',
+          width: 80,
+        },
+        {
+          title: '单价',
+          dataIndex: 'unitPrice',
+          width: 100,
+        },
+        {
+          title: '单位',
+          dataIndex: 'unit',
+          width: 80,
+        },
+        {
+          title: '备注',
+          dataIndex: 'remark',
+          width: 120,
+          render: (value: string) => value || '-'
+        }
+      ];
+
+      return (
+        <div className="space-y-4">
+          {/* 按箱计费表格 */}
+          {containerRateItems.length > 0 && (
+            <div>
+              <div className="text-sm font-medium text-gray-600 mb-2">按箱计费</div>
+              <Table
+                columns={containerColumns}
+                data={containerRateItems}
+                rowKey="id"
+                pagination={false}
+                size="small"
+                border={{
+                  wrapper: true,
+                  cell: true
+                }}
+              />
+            </div>
+          )}
+
+          {/* 非按箱计费表格 */}
+          {unitRateItems.length > 0 && (
+            <div>
+              <div className="text-sm font-medium text-gray-600 mb-2">非按箱计费</div>
+              <Table
+                columns={unitColumns}
+                data={unitRateItems}
+                rowKey="id"
+                pagination={false}
+                size="small"
+                border={{
+                  wrapper: true,
+                  cell: true
+                }}
+              />
+            </div>
+          )}
+        </div>
+      );
+    };
 
     return (
       <Tabs
@@ -1286,10 +1299,10 @@ ${costDetails.join('\n')}
         type="line"
       >
         <Tabs.TabPane key="basic" title="基础海运费">
-          {renderTableContent()}
+          {renderTableContent(rateItems)}
         </Tabs.TabPane>
         <Tabs.TabPane key="surcharge" title="附加费">
-          {renderTableContent()}
+          {renderTableContent(surchargeItems)}
         </Tabs.TabPane>
       </Tabs>
     );
