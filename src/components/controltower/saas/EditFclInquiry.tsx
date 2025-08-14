@@ -11,7 +11,8 @@ import {
   Checkbox,
   Radio, 
   Message,
-  Table
+  Table,
+  Tabs
 } from '@arco-design/web-react';
 
 import { IconSave, IconDelete, IconPlus, IconMinus } from '@arco-design/web-react/icon';
@@ -459,7 +460,8 @@ const EditFclInquiry: React.FC = () => {
       }
     ];
 
-    return (
+    // 渲染表格内容的函数
+    const renderTableContent = () => (
       <div className="space-y-4">
         {/* 按箱计费表格 */}
         {containerRateItems.length > 0 && (
@@ -497,6 +499,21 @@ const EditFclInquiry: React.FC = () => {
           </div>
         )}
       </div>
+    );
+
+    return (
+      <Tabs
+        defaultActiveTab="basic"
+        size="small"
+        type="line"
+      >
+        <Tabs.TabPane key="basic" title="基础海运费">
+          {renderTableContent()}
+        </Tabs.TabPane>
+        <Tabs.TabPane key="surcharge" title="附加费">
+          {renderTableContent()}
+        </Tabs.TabPane>
+      </Tabs>
     );
   };
 
@@ -962,4 +979,4 @@ const EditFclInquiry: React.FC = () => {
   );
 };
 
-export default EditFclInquiry; 
+export default EditFclInquiry;

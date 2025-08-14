@@ -16,7 +16,8 @@ import {
   Modal,
   DatePicker,
   Table,
-  Tag
+  Tag,
+  Tabs
 } from '@arco-design/web-react';
 
 const { TextArea } = Input;
@@ -1237,7 +1238,8 @@ ${costDetails.join('\n')}
       }
     ];
 
-    return (
+    // 渲染表格内容的函数
+    const renderTableContent = () => (
       <div className="space-y-4">
         {/* 按箱计费表格 */}
         {containerRateItems.length > 0 && (
@@ -1275,6 +1277,21 @@ ${costDetails.join('\n')}
           </div>
         )}
       </div>
+    );
+
+    return (
+      <Tabs
+        defaultActiveTab="basic"
+        size="small"
+        type="line"
+      >
+        <Tabs.TabPane key="basic" title="基础海运费">
+          {renderTableContent()}
+        </Tabs.TabPane>
+        <Tabs.TabPane key="surcharge" title="附加费">
+          {renderTableContent()}
+        </Tabs.TabPane>
+      </Tabs>
     );
   };
 
@@ -2431,4 +2448,4 @@ ${costDetails.join('\n')}
   );
 };
 
-export default CreateFclInquiry; 
+export default CreateFclInquiry;
