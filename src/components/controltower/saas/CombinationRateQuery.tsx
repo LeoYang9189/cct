@@ -13,9 +13,11 @@ import {
   Typography,
   Select,
   Message,
-  Steps
+  Steps,
+  Modal,
+  InputNumber
 } from '@arco-design/web-react';
-import { IconDownload, IconArrowLeft, IconCopy } from '@arco-design/web-react/icon';
+import { IconDownload, IconArrowLeft, IconCopy, IconPrinter } from '@arco-design/web-react/icon';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ControlTowerSaasLayout from "./ControlTowerSaasLayout";
 import './CreateFclInquiry.css';
@@ -165,9 +167,9 @@ const CombinationRateQuery: React.FC = () => {
   });
 
   // 表格选择状态
-  const [selectedMainlineRate, setSelectedMainlineRate] = useState<string>('');
-  const [selectedPrecarriageRate, setSelectedPrecarriageRate] = useState<string>('');
-  const [selectedOncarriageRate, setSelectedOncarriageRate] = useState<string>('');
+  const [selectedMainlineRate, setSelectedMainlineRate] = useState<MainlineRate | null>(null);
+  const [selectedPrecarriageRate, setSelectedPrecarriageRate] = useState<PrecarriageRate | null>(null);
+  const [selectedOncarriageRate, setSelectedOncarriageRate] = useState<OncarriageRate | null>(null);
 
   // 运价匹配结果
   const [matchedRates, setMatchedRates] = useState<{
@@ -182,6 +184,17 @@ const CombinationRateQuery: React.FC = () => {
 
   // 组合运价列表（最终结果）
   const [combinationRates, setCombinationRates] = useState<CombinationRate[]>([]);
+  
+  // 导出运价相关状态
+  const [exportModalVisible, setExportModalVisible] = useState(false);
+  const [containerSelections, setContainerSelections] = useState<Array<{
+    id: number;
+    type: string;
+    count: number;
+  }>>([{ id: 1, type: '20gp', count: 1 }]);
+  const [copyTextModalVisible, setCopyTextModalVisible] = useState(false);
+  const [pdfPreviewVisible, setPdfPreviewVisible] = useState(false);
+  const [quotationText, setQuotationText] = useState('');
   
   // 判断初始来源
   useEffect(() => {
@@ -284,6 +297,169 @@ const CombinationRateQuery: React.FC = () => {
       // 进入下一步
       setCurrentStep(1);
     }, 500);
+  };
+
+  // 打印报价单按钮点击处理
+  const handlePrintQuote = () => {
+    setExportModalVisible(true);
+  };
+
+  // 移除箱型选择
+  const removeContainerSelection = (id: number) => {
+    if (containerSelections.length > 1) {
+      setContainerSelections(containerSelections.filter(item => item.id !== id));
+    }
+  };
+
+  // 更新箱型选择
+  const updateContainerSelection = (id: number, field: 'type' | 'count', value: string | number) => {
+    setContainerSelections(
+      containerSelections.map(item => 
+        item.id === id ? { ...item, [field]: value } : item
+      )
+    );
+  };
+
+  // 添加箱型选择
+  const addContainerSelection = () => {
+    if (containerSelections.length >= 5) {
+      Message.warning('最多只能添加5个箱型');
+      return;
+    }
+    const newId = containerSelections.length > 0 ? Math.max(...containerSelections.map(item => item.id)) + 1 : 1;
+    const availableTypes = ['20gp', '40gp', '40hc', '45hc', '20nor', '40nor'];
+    const selectedTypes = containerSelections.map(item => item.type);
+    const availableType = availableTypes.find(type => !selectedTypes.includes(type)) || '20gp';
+    
+    setContainerSelections([...containerSelections, { id: newId, type: availableType, count: 1 }]);
+  };
+
+  // 获取可用的箱型选项
+  const getAvailableContainerTypes = (currentId: number) => {
+    const selectedTypes = containerSelections
+      .filter(item => item.id !== currentId)
+      .map(item => item.type);
+    
+    const allTypes = [
+      { label: '20GP', value: '20gp' },
+      { label: '40GP', value: '40gp' },
+      { label: '40HC', value: '40hc' },
+      { label: '45HC', value: '45hc' },
+      { label: '20NOR', value: '20nor' },
+      { label: '40NOR', value: '40nor' }
+    ];
+    
+    return allTypes.filter(type => !selectedTypes.includes(type.value));
+  };
+
+  // 复制到剪贴板
+  const copyToClipboard = () => {
+    const text = generateQuotationText();
+    navigator.clipboard.writeText(text).then(() => {
+      Message.success('报价文本已复制到剪贴板');
+      setCopyTextModalVisible(false);
+      setExportModalVisible(false);
+    }).catch(() => {
+      Message.error('复制失败，请手动复制');
+    });
+  };
+
+  // 生成报价文本
+  const generateQuotationText = () => {
+    let text = '=== 运价报价单 ===\n\n';
+    
+    // 基本信息
+    text += '基本信息:\n';
+    text += `货物类型: ${cargoType === 'fcl' ? '整箱' : cargoType === 'lcl' ? '拼箱' : '空运'}\n`;
+    text += `起运地: ${areaList[0]?.province || '未填写'}${areaList[0]?.city || ''}\n`;
+    text += `目的地: ${deliveryAddress.address || '未填写'}\n`;
+    text += `货物重量: ${cargoInfo.weight || '未填写'} KG\n`;
+    text += `货物体积: ${cargoInfo.volume || '未填写'} CBM\n\n`;
+    
+    // 箱型箱量
+    text += '箱型箱量:\n';
+    containerSelections.filter(c => c.count > 0).forEach(container => {
+      text += `${container.type.toUpperCase()}: ${container.count} 个\n`;
+    });
+    text += '\n';
+    
+    // 运价明细
+    if (selectedMainlineRate) {
+      text += '主线运价明细:\n';
+      text += `船公司: ${selectedMainlineRate.shipCompany}\n`;
+      text += `航线: ${selectedMainlineRate.departurePort} - ${selectedMainlineRate.dischargePort}\n`;
+      text += '费用明细:\n';
+      
+      // 计算主线运价总计
+      let mainlineTotal = 0;
+      containerSelections.filter(c => c.count > 0).forEach(container => {
+        const unitPrice = cargoType === 'fcl' 
+          ? selectedMainlineRate[container.type.toUpperCase() as keyof MainlineRate] as string || '0'
+          : '1200'; // 非按箱型计费的固定价格
+        const cleanPrice = unitPrice.toString().replace(/[^\d.]/g, '') || '0';
+        const totalPrice = parseFloat(cleanPrice) * container.count;
+        mainlineTotal += totalPrice;
+        text += `  ${container.type.toUpperCase()} × ${container.count}: USD ${cleanPrice} × ${container.count} = USD ${totalPrice.toFixed(2)}\n`;
+      });
+      text += `主线运价小计: USD ${mainlineTotal.toFixed(2)}\n\n`;
+    }
+    
+    if (selectedPrecarriageRate) {
+      text += '港前运价明细:\n';
+      text += `承运商: ${selectedPrecarriageRate.vendor}\n`;
+      text += `路线: ${selectedPrecarriageRate.origin} - ${selectedPrecarriageRate.destination}\n`;
+      text += '费用明细:\n';
+      
+      // 计算港前运价总计
+      let precarriageTotal = 0;
+      containerSelections.filter(c => c.count > 0).forEach(container => {
+        const unitPrice = cargoType === 'fcl' 
+          ? selectedPrecarriageRate[container.type.toUpperCase() as keyof PrecarriageRate] as string || '0'
+          : '300'; // 非按箱型计费的固定价格
+        const cleanPrice = unitPrice.toString().replace(/[^\d.]/g, '') || '0';
+        const totalPrice = parseFloat(cleanPrice) * container.count;
+        precarriageTotal += totalPrice;
+        text += `  ${container.type.toUpperCase()} × ${container.count}: ${selectedPrecarriageRate.currency} ${cleanPrice} × ${container.count} = ${selectedPrecarriageRate.currency} ${totalPrice.toFixed(2)}\n`;
+      });
+      text += `港前运价小计: ${selectedPrecarriageRate.currency} ${precarriageTotal.toFixed(2)}\n\n`;
+    }
+    
+    if (selectedOncarriageRate) {
+      text += '尾程运价明细:\n';
+      text += `代理: ${selectedOncarriageRate.agentName}\n`;
+      text += `地址: ${selectedOncarriageRate.address}\n`;
+      text += '费用明细:\n';
+      
+      // 计算尾程运价总计
+      let oncarriageTotal = 0;
+      containerSelections.filter(c => c.count > 0).forEach(container => {
+        const unitPrice = cargoType === 'fcl' 
+          ? (container.type === '20GP' ? '250' : container.type === '40GP' ? '350' : '380') // 按箱型计费示例价格
+          : '300'; // 非按箱型计费的固定价格
+        const cleanPrice = unitPrice.toString().replace(/[^\d.]/g, '') || '0';
+        const totalPrice = parseFloat(cleanPrice) * container.count;
+        oncarriageTotal += totalPrice;
+        text += `  ${container.type.toUpperCase()} × ${container.count}: CNY ${cleanPrice} × ${container.count} = CNY ${totalPrice.toFixed(2)}\n`;
+      });
+      text += `尾程运价小计: CNY ${oncarriageTotal.toFixed(2)}\n`;
+      if (selectedOncarriageRate.remark) {
+        text += `备注: ${selectedOncarriageRate.remark}\n`;
+      }
+      text += '\n';
+    }
+    
+    text += '报价时间: ' + new Date().toLocaleString() + '\n';
+    text += '有效期: 7天\n';
+    text += '备注: 以上报价仅供参考，最终价格以实际成交为准。';
+    
+    return text;
+  };
+
+  // 生成PDF
+  const generatePDF = () => {
+    setQuotationText(generateQuotationText());
+    setPdfPreviewVisible(true);
+    setExportModalVisible(false);
   };
 
   // 生成组合方案
@@ -1034,7 +1210,7 @@ const CombinationRateQuery: React.FC = () => {
                   <div className="text-blue-600 font-bold border-l-4 border-blue-600 pl-2">干线运价匹配结果</div>
                   <Space>
                     <Button type="primary" onClick={generateCombinations}>生成组合方案</Button>
-                    <Button type="primary">打印报价单</Button>
+                    <Button type="primary" icon={<IconPrinter />} onClick={handlePrintQuote}>打印报价单</Button>
                   </Space>
                 </div>
                 
@@ -1049,8 +1225,8 @@ const CombinationRateQuery: React.FC = () => {
                           width: 80,
                           render: (_, record) => (
                             <Radio
-                              checked={selectedMainlineRate === record.certNo}
-                              onChange={() => setSelectedMainlineRate(record.certNo)}
+                              checked={selectedMainlineRate?.certNo === record.certNo}
+                              onChange={() => setSelectedMainlineRate(record)}
                             />
                           ),
                         },
@@ -1077,8 +1253,8 @@ const CombinationRateQuery: React.FC = () => {
                           width: 80,
                           render: (_, record) => (
                             <Radio
-                              checked={selectedPrecarriageRate === record.certNo}
-                              onChange={() => setSelectedPrecarriageRate(record.certNo)}
+                              checked={selectedPrecarriageRate?.certNo === record.certNo}
+                              onChange={() => setSelectedPrecarriageRate(record)}
                             />
                           ),
                         },
@@ -1105,8 +1281,8 @@ const CombinationRateQuery: React.FC = () => {
                           width: 80,
                           render: (_, record) => (
                             <Radio
-                              checked={selectedOncarriageRate === record.certNo}
-                              onChange={() => setSelectedOncarriageRate(record.certNo)}
+                              checked={selectedOncarriageRate?.certNo === record.certNo}
+                              onChange={() => setSelectedOncarriageRate(record)}
                             />
                           ),
                         },
@@ -1152,8 +1328,348 @@ const CombinationRateQuery: React.FC = () => {
           )}
         </Card>
       </Form>
+      
+      {/* 导出运价弹窗 */}
+      <Modal
+        title="导出运价"
+        visible={exportModalVisible}
+        onCancel={() => setExportModalVisible(false)}
+        footer={null}
+        style={{ width: 600 }}
+      >
+        <div className="space-y-4">
+          <div>
+            <div className="text-gray-700 font-medium mb-2">选择箱型箱量：</div>
+            {containerSelections.map((container) => (
+              <div key={container.id} className="flex items-center space-x-2 mb-2">
+                <Select
+                  value={container.type}
+                  onChange={(value) => updateContainerSelection(container.id, 'type', value)}
+                  style={{ width: 120 }}
+                  options={getAvailableContainerTypes(container.id)}
+                />
+                <InputNumber
+                  value={container.count}
+                  onChange={(value) => updateContainerSelection(container.id, 'count', value || 1)}
+                  min={1}
+                  max={999}
+                  style={{ width: 80 }}
+                />
+                <span className="text-gray-500">个</span>
+                {containerSelections.length > 1 && (
+                  <Button
+                    type="text"
+                    size="small"
+                    onClick={() => removeContainerSelection(container.id)}
+                    className="text-red-500"
+                  >
+                    删除
+                  </Button>
+                )}
+              </div>
+            ))}
+            {containerSelections.length < 5 && (
+              <Button
+                type="dashed"
+                size="small"
+                onClick={addContainerSelection}
+                className="mt-2"
+              >
+                + 添加箱型
+              </Button>
+            )}
+          </div>
+          
+          <div className="flex justify-end space-x-2 pt-4 border-t">
+            <Button onClick={() => setExportModalVisible(false)}>取消</Button>
+            <Button type="outline" icon={<IconCopy />} onClick={copyToClipboard}>
+              复制快捷报价文本
+            </Button>
+            <Button type="primary" onClick={generatePDF}>
+              生成报价单
+            </Button>
+          </div>
+        </div>
+      </Modal>
+      
+      {/* 快捷报价文本弹窗 */}
+      <Modal
+        title="快捷报价文本"
+        visible={copyTextModalVisible}
+        onCancel={() => setCopyTextModalVisible(false)}
+        footer={[
+          <Button key="close" onClick={() => setCopyTextModalVisible(false)}>
+            关闭
+          </Button>,
+          <Button key="copy" type="primary" icon={<IconCopy />} onClick={copyToClipboard}>
+            复制到剪贴板
+          </Button>
+        ]}
+        style={{ width: 800 }}
+      >
+        <div className="bg-gray-50 p-4 rounded border">
+          <pre className="whitespace-pre-wrap text-sm">{quotationText}</pre>
+        </div>
+      </Modal>
+      
+      {/* PDF预览弹窗 */}
+      <Modal
+        title="报价单预览"
+        visible={pdfPreviewVisible}
+        onCancel={() => setPdfPreviewVisible(false)}
+        footer={[
+          <Button key="close" onClick={() => setPdfPreviewVisible(false)}>
+            关闭
+          </Button>,
+          <Button key="print" type="primary" onClick={() => window.print()}>
+            打印
+          </Button>
+        ]}
+        style={{ width: 900, top: 20 }}
+      >
+        <div className="bg-white p-6 text-sm" style={{ minHeight: '600px' }}>
+          <div className="text-center mb-6">
+            <h1 className="text-2xl font-bold text-gray-800">运价报价单</h1>
+            <div className="text-gray-500 mt-2">Freight Rate Quotation</div>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-6 mb-6">
+            <div>
+              <h3 className="font-bold text-gray-700 mb-2 border-b pb-1">基本信息</h3>
+              <div className="space-y-1 text-sm">
+                <div><span className="font-medium">货物类型：</span>{cargoType === 'fcl' ? '整箱' : cargoType === 'lcl' ? '拼箱' : '空运'}</div>
+                <div><span className="font-medium">起运地：</span>{areaList[0]?.province || '未填写'}{areaList[0]?.city || ''}</div>
+                <div><span className="font-medium">目的地：</span>{deliveryAddress.address || '未填写'}</div>
+                <div><span className="font-medium">货物重量：</span>{cargoInfo.weight || '未填写'} KG</div>
+                <div><span className="font-medium">货物体积：</span>{cargoInfo.volume || '未填写'} CBM</div>
+              </div>
+            </div>
+            
+            <div>
+              <h3 className="font-bold text-gray-700 mb-2 border-b pb-1">箱型箱量</h3>
+              <div className="space-y-1 text-sm">
+                {containerSelections.map(container => (
+                  <div key={container.id}>
+                    <span className="font-medium">{container.type.toUpperCase()}：</span>{container.count} 个
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          
+          {/* 主线运价明细 */}
+          {selectedMainlineRate && (
+            <div className="mb-6">
+              <div className="bg-blue-50 px-4 py-2 mb-3 rounded">
+                <h3 className="text-lg font-semibold text-blue-800">主线运价明细</h3>
+              </div>
+              <div className="text-sm mb-2">
+                <span className="font-medium">船公司：</span>{selectedMainlineRate.shipCompany} | 
+                <span className="font-medium">航线：</span>{selectedMainlineRate.departurePort} - {selectedMainlineRate.dischargePort}
+              </div>
+              <table className="w-full border-collapse border border-gray-300 shadow-sm text-sm">
+                <thead>
+                  <tr className="bg-blue-100">
+                    <th className="border border-gray-300 p-3 text-left font-semibold">费用项目</th>
+                    <th className="border border-gray-300 p-3 text-center font-semibold">币种</th>
+                    {containerSelections
+                      .filter(selection => selection.count > 0)
+                      .map(selection => (
+                        <th key={selection.id} className="border border-gray-300 p-3 text-center font-semibold">
+                          {selection.type.toUpperCase()} × {selection.count}
+                        </th>
+                      ))}
+                    <th className="border border-gray-300 p-3 text-center font-semibold bg-blue-200">小计</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="bg-white">
+                    <td className="border border-gray-300 p-3 font-medium">主线运输费</td>
+                    <td className="border border-gray-300 p-3 text-center">USD</td>
+                    {containerSelections
+                      .filter(selection => selection.count > 0)
+                      .map(selection => {
+                        // 按箱型计费：使用对应箱型的价格
+                        const unitPrice = cargoType === 'fcl' 
+                          ? selectedMainlineRate[selection.type.toUpperCase() as keyof MainlineRate] as string || '0'
+                          : '500'; // 非按箱型计费的固定价格示例
+                        const cleanPrice = unitPrice.toString().replace(/[^\d.]/g, '') || '0';
+                        const totalPrice = parseFloat(cleanPrice) * selection.count;
+                        return (
+                          <td key={selection.id} className="border border-gray-300 p-3 text-center">
+                            <div>
+                              <div className="text-sm text-gray-600">USD {cleanPrice} × {selection.count}</div>
+                              <div className="font-medium">USD {totalPrice.toFixed(2)}</div>
+                            </div>
+                          </td>
+                        );
+                      })}
+                    <td className="border border-gray-300 p-3 text-center font-bold text-blue-700 bg-blue-50">
+                      USD {containerSelections
+                        .filter(selection => selection.count > 0)
+                        .reduce((sum, selection) => {
+                          const unitPrice = cargoType === 'fcl' 
+                            ? selectedMainlineRate[selection.type.toUpperCase() as keyof MainlineRate] as string || '0'
+                            : '500';
+                          const cleanPrice = unitPrice.toString().replace(/[^\d.]/g, '') || '0';
+                          return sum + (parseFloat(cleanPrice) * selection.count);
+                        }, 0).toFixed(2)}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          )}
+          
+          {/* 港前运价明细 */}
+          {selectedPrecarriageRate && (
+            <div className="mb-6">
+              <div className="bg-green-50 px-4 py-2 mb-3 rounded">
+                <h3 className="text-lg font-semibold text-green-800">港前运价明细</h3>
+              </div>
+              <div className="text-sm mb-2">
+                <span className="font-medium">承运商：</span>{selectedPrecarriageRate.vendor} | 
+                <span className="font-medium">路线：</span>{selectedPrecarriageRate.origin} - {selectedPrecarriageRate.destination}
+              </div>
+              <table className="w-full border-collapse border border-gray-300 shadow-sm text-sm">
+                <thead>
+                  <tr className="bg-green-100">
+                    <th className="border border-gray-300 p-3 text-left font-semibold">费用项目</th>
+                    <th className="border border-gray-300 p-3 text-center font-semibold">币种</th>
+                    {containerSelections
+                      .filter(selection => selection.count > 0)
+                      .map(selection => (
+                        <th key={selection.id} className="border border-gray-300 p-3 text-center font-semibold">
+                          {selection.type.toUpperCase()} × {selection.count}
+                        </th>
+                      ))}
+                    <th className="border border-gray-300 p-3 text-center font-semibold bg-green-200">小计</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="bg-white">
+                    <td className="border border-gray-300 p-3 font-medium">港前运输费</td>
+                    <td className="border border-gray-300 p-3 text-center">{selectedPrecarriageRate.currency}</td>
+                    {containerSelections
+                      .filter(selection => selection.count > 0)
+                      .map(selection => {
+                        // 按箱型计费：使用对应箱型的价格，非按箱型计费：使用统一价格
+                        const unitPrice = cargoType === 'fcl' 
+                          ? selectedPrecarriageRate[selection.type.toUpperCase() as keyof PrecarriageRate] as string || '0'
+                          : '300'; // 非按箱型计费的固定价格示例
+                        const cleanPrice = unitPrice.toString().replace(/[^\d.]/g, '') || '0';
+                        const totalPrice = parseFloat(cleanPrice) * selection.count;
+                        return (
+                          <td key={selection.id} className="border border-gray-300 p-3 text-center">
+                            <div>
+                              <div className="text-sm text-gray-600">{selectedPrecarriageRate.currency} {cleanPrice} × {selection.count}</div>
+                              <div className="font-medium">{selectedPrecarriageRate.currency} {totalPrice.toFixed(2)}</div>
+                            </div>
+                          </td>
+                        );
+                      })}
+                    <td className="border border-gray-300 p-3 text-center font-bold text-green-700 bg-green-50">
+                      {selectedPrecarriageRate.currency} {containerSelections
+                        .filter(selection => selection.count > 0)
+                        .reduce((sum, selection) => {
+                          const unitPrice = cargoType === 'fcl' 
+                            ? selectedPrecarriageRate[selection.type.toUpperCase() as keyof PrecarriageRate] as string || '0'
+                            : '300';
+                          const cleanPrice = unitPrice.toString().replace(/[^\d.]/g, '') || '0';
+                          return sum + (parseFloat(cleanPrice) * selection.count);
+                        }, 0).toFixed(2)}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          )}
+          
+          {/* 尾程运价明细 */}
+          {selectedOncarriageRate && (
+            <div className="mb-6">
+              <div className="bg-orange-50 px-4 py-2 mb-3 rounded">
+                <h3 className="text-lg font-semibold text-orange-800">尾程运价明细</h3>
+              </div>
+              <div className="text-sm mb-2">
+                <span className="font-medium">代理：</span>{selectedOncarriageRate.agentName} | 
+                <span className="font-medium">地址：</span>{selectedOncarriageRate.address}
+              </div>
+              <table className="w-full border-collapse border border-gray-300 shadow-sm text-sm">
+                <thead>
+                  <tr className="bg-orange-100">
+                    <th className="border border-gray-300 p-3 text-left font-semibold">费用项目</th>
+                    <th className="border border-gray-300 p-3 text-center font-semibold">币种</th>
+                    {containerSelections
+                      .filter(selection => selection.count > 0)
+                      .map(selection => (
+                        <th key={selection.id} className="border border-gray-300 p-3 text-center font-semibold">
+                          {selection.type.toUpperCase()} × {selection.count}
+                        </th>
+                      ))}
+                    <th className="border border-gray-300 p-3 text-center font-semibold bg-orange-200">小计</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="bg-white">
+                    <td className="border border-gray-300 p-3 font-medium">尾程运输费</td>
+                    <td className="border border-gray-300 p-3 text-center">CNY</td>
+                    {containerSelections
+                      .filter(selection => selection.count > 0)
+                      .map(selection => {
+                        // 按箱型计费：使用对应箱型的价格，非按箱型计费：使用统一价格
+                        const unitPrice = cargoType === 'fcl' 
+                          ? (selection.type === '20GP' ? '250' : selection.type === '40GP' ? '350' : '380') // 按箱型计费示例价格
+                          : '300'; // 非按箱型计费的固定价格示例
+                        const cleanPrice = unitPrice.toString().replace(/[^\d.]/g, '') || '0';
+                        const totalPrice = parseFloat(cleanPrice) * selection.count;
+                        return (
+                          <td key={selection.id} className="border border-gray-300 p-3 text-center">
+                            <div>
+                              <div className="text-sm text-gray-600">CNY {cleanPrice} × {selection.count}</div>
+                              <div className="font-medium">CNY {totalPrice.toFixed(2)}</div>
+                            </div>
+                          </td>
+                        );
+                      })}
+                    <td className="border border-gray-300 p-3 text-center font-bold text-orange-700 bg-orange-50">
+                      CNY {containerSelections
+                        .filter(selection => selection.count > 0)
+                        .reduce((sum, selection) => {
+                          const unitPrice = cargoType === 'fcl' 
+                            ? (selection.type === '20GP' ? '250' : selection.type === '40GP' ? '350' : '380')
+                            : '300';
+                          const cleanPrice = unitPrice.toString().replace(/[^\d.]/g, '') || '0';
+                          return sum + (parseFloat(cleanPrice) * selection.count);
+                        }, 0).toFixed(2)}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div className="text-sm text-gray-600 mt-2">
+                备注：{selectedOncarriageRate.remark || '无'}
+              </div>
+            </div>
+          )}
+          
+          <div className="border-t pt-4 mt-6">
+            <div className="grid grid-cols-2 gap-6 text-sm">
+              <div>
+                <div><span className="font-medium">报价时间：</span>{new Date().toLocaleString()}</div>
+                <div><span className="font-medium">有效期：</span>7天</div>
+              </div>
+              <div>
+                <div className="text-gray-600">
+                  <div className="font-medium mb-1">备注：</div>
+                  <div>以上报价仅供参考，最终价格以实际成交为准。</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </ControlTowerSaasLayout>
   );
 };
 
-export default CombinationRateQuery; 
+export default CombinationRateQuery;
